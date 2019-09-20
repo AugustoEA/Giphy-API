@@ -18,8 +18,34 @@
                <script type="text/javascript">
 
 
-        var animals = ["dog","cow", "cat", "honey badger", "rabbit", "opossum", "skunk", "shark", "hawk", "ferret", "tortoise", "bee", "koala", "hedgehog", "mountain lion", "duck", "goat", "chicken", "capybara", "goose", "bullfrog"];
+    var animals = ["dog","cow", "cat", "honey badger", "rabbit", "opossum", "skunk", "shark", "hawk", "ferret", "tortoise", "bee", "koala", "hedgehog", "mountain lion", "duck", "goat", "chicken", "capybara", "goose", "bullfrog"];
+        // console.log(animals)
 
+        function displayAnimalGif() {
+    var animal = $(this).attr("data-name");
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + animal + "&api_key=ObhwNv46TdhbOpMmIe03vCYKfvJPCNNq&limit=10";
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    })
+        .then(function(response) {
+            var results = response.data;
+            for (var i = 0; i < results.length; i++) {
+            var gifDiv = $("<div>");
+            var rating = results[i].rating;
+            var p = $("<p>").text("Rating: " + rating);
+            var personImage = $("<img>");
+            personImage.attr("src", results[i].images.fixed_height.url);
+            gifDiv.prepend(p);
+            gifDiv.prepend(personImage);
+            $("#gifs-here").prepend(gifDiv);
+        }
+    });
+        $(document).on("click", ".animal", displayAnimalGif);
+        renderButtons();
+
+
+        
     
 </body>
 </html>
